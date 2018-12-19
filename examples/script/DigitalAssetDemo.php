@@ -15,7 +15,7 @@ class DigitalAssetDemo extends PHPUnit_Framework_TestCase {
     public function setSDKConfigure($chainId) {
         $sdkConfigure = new \src\model\request\SDKConfigure();
         $sdkConfigure->setChainId($chainId);
-        $sdkConfigure->setUrl("http://seed1.bumotest.io:26002");
+        $sdkConfigure->setUrl("http://127.0.0.1:36002");
         $GLOBALS['sdk'] = \src\SDK::getInstanceWithConfigure($sdkConfigure);
     }
     /** @test */
@@ -87,7 +87,7 @@ class DigitalAssetDemo extends PHPUnit_Framework_TestCase {
     /** @test */
     public function accountGetAssets() {
         
-        $account = $GLOBALS['sdk']->getAccount();
+        $account = $GLOBALS['sdk']->getAccountService();
 
         $accountGetAssetsRequest = new \src\model\request\AccountGetAssetsRequest();
         $accountGetAssetsRequest->setAddress("buQq9DshgX8zUV66YoK6fApok3MZpyy2XiPA");
@@ -460,7 +460,7 @@ class DigitalAssetDemo extends PHPUnit_Framework_TestCase {
 
     /** @test */
     public function accountSetMetadata() {
-        $this->setSDKConfigure(10);
+        $this->setSDKConfigure(0);
 
         // Init variable
         // The account private key to set metadata
@@ -486,7 +486,6 @@ class DigitalAssetDemo extends PHPUnit_Framework_TestCase {
         $setMetadata->setSourceAddress($accountAddress);
         $setMetadata->setKey($key);
         $setMetadata->setValue($value);
-        $setMetadata->setDeleteFlag("abc");
 
         $operations = array();
         array_push($operations, $setMetadata);
@@ -615,7 +614,7 @@ class DigitalAssetDemo extends PHPUnit_Framework_TestCase {
         // The fixed write 1000L, the unit is MO
         $gasPrice = 1000;
         //Set up the maximum cost 0.01BU
-        $feeLimit = \src\common\Tools::BU2MO("50.01");
+        $feeLimit = \src\common\Tools::BU2MO("0.01");
         // Metadata
         $metadata = "send asset";
 

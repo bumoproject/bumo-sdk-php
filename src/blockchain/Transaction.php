@@ -397,6 +397,9 @@ class Transaction {
                 throw new SDKException("INVALID_BLOB_ERROR", null);
             }
             $signatures = $transactionSubmitRequest->getSignatures();
+            if (!is_array($signatures)) {
+                throw new SDKException("SIGNATURES_ARRAY_ERROR", null);
+            }
             if (Tools::isEmpty($signatures)) {
                 throw new SDKException("SIGNATURE_EMPTY_ERROR", null);
             }
@@ -404,7 +407,11 @@ class Transaction {
             $transactionItem = new TransactionSubmitItem();
             $transactionItem->transaction_blob = $blob;
             for ($i = 0; $i < count($signatures); $i++) {
-                $signData = $signatures[$i]->sign_data;
+                $signature = $signatures[$i];
+                if (!($signature instanceof Signature)) {
+                    throw new SDKException("INVALID_SIGNATURE_ERROR", null);
+                }
+                $signData = $signature->sign_data;
                 if (Tools::isEmpty($signData)) {
                     throw new SDKException("SIGNDATA_NULL_ERROR", null);
                 }

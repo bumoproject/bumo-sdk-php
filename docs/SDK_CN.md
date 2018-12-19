@@ -1608,6 +1608,8 @@ SIGNATURE_EMPTY_ERROR|11067|The signatures cannot be empty
 REQUEST_NULL_ERROR|12001|Request parameter cannot be null
 SYSTEM_ERROR|20000|System error
 INVALID_REQUEST_ERROR|17004|Request is invalid
+SIGNATURES_ARRAY_ERROR|17009|The signatures should be an array
+INVALID_SIGNATURE_ERROR|17010|The signature is invalid
 
 > 示例
 

@@ -44,7 +44,7 @@ class AssetOperation {
             }
             $sourceAddress = $assetIssueOperation->getSourceAddress();
             $isValid = KeyPair::isAddressValid($sourceAddress);
-            if(Tools::isEmpty($isValid)) {
+            if(!Tools::isEmpty($sourceAddress) && Tools::isEmpty($isValid)) {
                 throw new SDKException("INVALID_SOURCEADDRESS_ERROR", null);
             }
             $code = $assetIssueOperation->getCode();

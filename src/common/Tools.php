@@ -43,11 +43,11 @@ class Tools{
      * @return int
      */
    static public function unitWithoutDecimals($unitWithDecimals, $decimals){
-       if (!is_string($unitWithDecimals) || !is_numeric($unitWithDecimals) || bccomp($unitWithDecimals, '0') < 0 ||
+       if (is_string($unitWithDecimals) || !is_int($unitWithDecimals) || $unitWithDecimals < 0 ||
            is_string($decimals) || !is_int($decimals) || $decimals > 18 || $decimals < 0) {
            return false;
        }
-       $unitWithoutDecimals = (int)bcmul($unitWithDecimals, pow(10, $decimals));
+       $unitWithoutDecimals = bcdiv($unitWithDecimals, pow(10, $decimals), $decimals);
        return $unitWithoutDecimals;
    }
 
@@ -58,12 +58,12 @@ class Tools{
      * @return string
      */
    static public function unitWithDecimals($unitWithoutDecimals, $decimals){
-       if (is_string($unitWithoutDecimals) || !is_int($unitWithoutDecimals) || $unitWithoutDecimals < 0 ||
+       if (!is_string($unitWithoutDecimals) || !is_numeric($unitWithoutDecimals) || bccomp($unitWithoutDecimals, '0') < 0 ||
            is_string($decimals) || !is_int($decimals) || $decimals > 18 || $decimals < 0) {
            return false;
        }
-       $bu = bcdiv($unitWithoutDecimals, pow(10, $decimals), $decimals);
-       return $bu;
+       $unitWithDecimals = (int)bcmul($unitWithoutDecimals, pow(10, $decimals));
+       return $unitWithDecimals;
    }
 
     /**
@@ -72,7 +72,7 @@ class Tools{
      * @return int
      */
    static public function BU2MO($bu) {
-        return Tools::unitWithoutDecimals($bu, 8);
+        return Tools::unitWithDecimals($bu, 8);
    }
 
     /**
@@ -81,7 +81,7 @@ class Tools{
      * @return string
      */
    static public function MO2BU($mo) {
-       return Tools::unitWithDecimals($mo, 8);
+       return Tools::unitWithoutDecimals($mo, 8);
    }
 
    static public function jsonToClass($json, $class) {

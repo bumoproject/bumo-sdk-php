@@ -68,7 +68,7 @@ class SdkError {
        "INVALID_OPTTYPE_ERROR"=>array(11064 => "OptType must be between 0 and 2"),
        "GET_ALLOWANCE_ERROR"=>array(11065 => "Failed to get allowance"),
        "GET_TOKEN_INFO_ERROR"=>array(11066 => "Failed to get token info"),
-       "SIGNATURE_EMPTY_ERROR"=>array(11067 => "The signatures cannot be empty"),
+       "SIGNATURES_EMPTY_ERROR"=>array(11067 => "The signatures cannot be empty"),
        "INVALID_ISSUE_TYPE_ERROR"=>array(11068 => "Invalid issuing type"),
        "INVALID_TOKEN_CODE_ERROR"=>array(11069 => "The length of token code must be between 1 and 64"),
        "INVALID_TOKEN_DESCRIPTION_ERROR"=>array(11070 => "The length of description must be between 1 and 1024"),
@@ -89,6 +89,8 @@ class SdkError {
        "SIGNERS_NOT_ARRAY_ERROR"=> array(17006=>"The signers should be an array"),
        "INVALID_SIGNER_ERROR"=>array(17007=>"The signer is invalid"),
        "TYPE_THRESHOLDS_NOT_ARRAY_ERROR"=>array(17008=>"The typeThresholds should be an array"),
+       "SIGNATURES_ARRAY_ERROR"=>array(17009=>"The signatures should be an array"),
+       "INVALID_SIGNATURE_ERROR"=>array(17010=>"The signature is invalid"),
         );
 
     /**
