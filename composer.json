@@ -1,0 +1,19 @@
+{
+  "name": "bumo/bumo-sdk",
+  "description": "PHP developers can easily operate BUMO blockchain via the BUMO PHP SDK",
+  "keywords": ["bumo", "sdk"],
+  "homepage": "https://github.com/bumoproject/bumo-sdk-php.git",
+  "version": "v1.0.0",
+  "require": {
+    "google/protobuf": "v3.6.0.1",
+    "ext-bcmath": "*",
+    "ext-json": "*",
+    "ext-curl": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Protocol\\": "src\\crypto\\protobuf\\Protocol",
+      "GPBMetadata\\": "src\\crypto\\protobuf\\GPBMetadata"
+    }
+  }
+}
