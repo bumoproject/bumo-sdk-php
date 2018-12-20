@@ -25,9 +25,9 @@ php5.6 and above.
 
 1、Copy the corresponding version of ed25519 in the libs directory to the PHP extension directory
 
-2、Copy the src directory and composer.json to your project
-
-
+2、Execute the following commands to add to project: 
+    composer require bumo/bumo-sdk:^{version}
+   example: composer require bumo/bumo-sdk:^v1.0.0
 
 ## Example project
 
