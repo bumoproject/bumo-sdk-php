@@ -8,7 +8,7 @@
 
 namespace src\token\operation;
 
-require_once dirname(__FILE__) . "/../../../vendor/autoload.php";
+
 require_once dirname(__FILE__) . "/../../crypto/protobuf/GPBMetadata/Common.php";
 require_once dirname(__FILE__) . "/../../crypto/protobuf/GPBMetadata/Chain.php";
 require_once dirname(__FILE__) . "/../../crypto/protobuf/Protocol/Operation.php";
