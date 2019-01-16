@@ -196,17 +196,17 @@ class AccountOperation {
                 throw new SDKException("INVALID_SOURCEADDRESS_ERROR", null);
             }
             $masterWeight = $accountSetPrivilegeOperation->getMasterWeight();
-            if(!Tools::isNULL($masterWeight)) {
+            if(!Tools::isEmpty($masterWeight)) {
                 if(!is_string($masterWeight) || (is_string($masterWeight) &&
-                        ((!is_numeric($masterWeight) && !Tools::isEmpty($masterWeight)) || bccomp($masterWeight, "0") < 0 ||
+                        (!is_numeric($masterWeight) || bccomp($masterWeight, "0") < 0 ||
                             bccomp($masterWeight, Constant::UINT_MAX) > 0))) {
                     throw new SDKException("INVALID_MASTERWEIGHT_ERROR", null);
                 }
             }
             $txThreshold = $accountSetPrivilegeOperation->getTxThreshold();
-            if(!Tools::isNULL($txThreshold)) {
+            if(!Tools::isEmpty($txThreshold)) {
                 if(!is_string($txThreshold) || (is_string($txThreshold) &&
-                        ((!is_numeric($txThreshold) && !Tools::isEmpty($txThreshold)) || bccomp($txThreshold, "0") < 0 ||
+                        (!is_numeric($txThreshold) || bccomp($txThreshold, "0") < 0 ||
                             bccomp($txThreshold, Constant::INT64_MAX) > 0))) {
                     throw new SDKException("INVALID_TX_THRESHOLD_ERROR", null);
                 }
