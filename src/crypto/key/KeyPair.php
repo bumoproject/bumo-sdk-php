@@ -6,7 +6,9 @@
  * Time: 18:02
  */
 namespace src\crypto\key;
+use function PHPSTORM_META\type;
 use src\crypto\base58\Base58;
+use Elliptic\EdDSA;
 
 class KeyPair
 {
@@ -15,8 +17,7 @@ class KeyPair
      * @param null
      * @return null
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->createKeyPair();
     }
 
@@ -50,8 +51,10 @@ class KeyPair
         if (!$rawPrivateKey) {
             return false;
         }
-        $firstString = ed25519_publickey($rawPrivateKey);
-        return KeyPair::encodePublicKey($firstString);
+        $ec =  new EdDSA('ed25519');
+        $kp = $ec->keyFromSecret(bin2hex($rawPrivateKey));
+        $rawPublicKey = call_user_func_array("pack", array_merge(["C*"], $kp->getPublic()));
+        return KeyPair::encodePublicKey($rawPublicKey);
     }
 
     /**
@@ -60,8 +63,8 @@ class KeyPair
      * @return string: encode address
      */
     public function getEncAddress() {
-        $firstString = $this->rawPublicKey;
-        return KeyPair::encodeAddress($firstString);
+        $rawPublicKey = $this->rawPublicKey;
+        return KeyPair::encodeAddress($rawPublicKey);
     }
 
     /**
@@ -88,8 +91,10 @@ class KeyPair
             return false;
         }
 
-        $firstString = ed25519_publickey($rawPrivateKey);
-        return KeyPair::encodeAddress($firstString);
+        $ec =  new EdDSA('ed25519');
+        $kp = $ec->keyFromSecret(bin2hex($rawPrivateKey));
+        $rawPublicKey = call_user_func_array("pack", array_merge(["C*"], $kp->getPublic()));
+        return KeyPair::encodeAddress($rawPublicKey);
     }
 
     /**
@@ -156,8 +161,8 @@ class KeyPair
      * @return array: the signed data
      */
     public function sign($message) {
-        $signature = ed25519_sign($message, $this->rawPrivateKey, $this->rawPublicKey);
-        return $signature;
+        $signature = $this->kp->sign(bin2hex($message))->toBytes();
+        return call_user_func_array("pack", array_merge(["C*"], $signature));
     }
 
     /**
@@ -171,9 +176,10 @@ class KeyPair
         if (!$rawPrivateKey) {
             return false;
         }
-        $rawPublicKey = ed25519_publickey($rawPrivateKey);
-        $signature = ed25519_sign($message, $rawPrivateKey, $rawPublicKey);
-        return $signature;
+        $ec =  new EdDSA('ed25519');
+        $kp = $ec->keyFromSecret(bin2hex($rawPrivateKey));
+        $signature = $kp->sign(bin2hex($message))->toBytes();
+        return call_user_func_array("pack", array_merge(["C*"], $signature));
     }
 
     /**
@@ -183,7 +189,7 @@ class KeyPair
      * @return boolean: true or false
      */
     public function verify($message, $signature) {
-        $status = ed25519_sign_open($message,  $this->rawPublicKey, $signature);
+        $status = $this->kp->verify(bin2hex($message),  bin2hex($signature));
         if($status){
             return true;
         }
@@ -202,7 +208,9 @@ class KeyPair
         if (!$rawPublicKey) {
             return false;
         }
-        $status = ed25519_sign_open($message,  $rawPublicKey, $signature);
+        $ec =  new EdDSA('ed25519');
+        $key = $ec->keyFromPublic(bin2hex($rawPublicKey), 'hex');
+        $status = $key->verify(bin2hex($message), bin2hex($signature));
         if($status){
             return true;
         }
@@ -212,7 +220,10 @@ class KeyPair
     private function createKeyPair() {
         $strong = true;
         $this->rawPrivateKey = openssl_random_pseudo_bytes(32, $strong);
-        $this->rawPublicKey  = ed25519_publickey($this->rawPrivateKey);
+
+        $ec =  new EdDSA('ed25519');
+        $this->kp = $ec->keyFromSecret(bin2hex($this->rawPrivateKey));
+        $this->rawPublicKey = call_user_func_array("pack", array_merge(["C*"], $this->kp->getPublic()));
     }
 
     private static function encodePrivateKey($rawPrivateKey) {

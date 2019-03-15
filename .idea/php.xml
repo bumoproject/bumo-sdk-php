@@ -2,10 +2,14 @@
 <project version="4">
   <component name="PhpIncludePathManager">
     <include_path>
-      <path value="$PROJECT_DIR$/vendor/google/protobuf" />
       <path value="$PROJECT_DIR$/vendor/composer" />
+      <path value="$PROJECT_DIR$/vendor/simplito/bn-php" />
+      <path value="$PROJECT_DIR$/vendor/simplito/bigint-wrapper-php" />
+      <path value="$PROJECT_DIR$/vendor/google/protobuf" />
+      <path value="$PROJECT_DIR$/vendor/simplito/elliptic-php" />
     </include_path>
   </component>
+  <component name="PhpProjectSharedConfiguration" php_language_level="7.1" />
   <component name="PhpUnit">
     <phpunit_settings>
       <PhpUnitSettings load_method="PHPUNIT_PHAR" custom_loader_path="$PROJECT_DIR$/vendor/autoload.php" phpunit_phar_path="/usr/local/bin/phpunit" />

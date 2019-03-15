@@ -8,8 +8,8 @@
 
 include_once dirname(dirname(dirname(__FILE__))) . "/autoload.php";
 
-//$sdk = \src\SDK::getInstance("http://seed1.bumotest.io:26002");
-$sdk = \src\SDK::getInstance("http://127.0.0.1:36002"); // localhost
+$sdk = \src\SDK::getInstance("http://seed1.bumotest.io:26002");
+//$sdk = \src\SDK::getInstance("http://127.0.0.1:36002"); // localhost
 
 class DigitalAssetDemo extends PHPUnit_Framework_TestCase {
     public function setSDKConfigure($chainId) {
@@ -18,6 +18,12 @@ class DigitalAssetDemo extends PHPUnit_Framework_TestCase {
         $sdkConfigure->setUrl("http://127.0.0.1:36002");
         $GLOBALS['sdk'] = \src\SDK::getInstanceWithConfigure($sdkConfigure);
     }
+    /** @test */
+    public function keys() {
+        $keypair = new src\crypto\key\KeyPair();
+        var_dump($keypair->verify("test", $keypair->sign("test")));
+    }
+
     /** @test */
     public function test() {
         $signers = array();
@@ -533,7 +539,7 @@ class DigitalAssetDemo extends PHPUnit_Framework_TestCase {
         // 2. Build setPrivilege
         $setPrivilege = new \src\model\request\operation\AccountSetPrivilegeOperation();
         $setPrivilege->setSourceAddress(null);
-        $setPrivilege->setMasterWeight($masterWeight);
+        $setPrivilege->setMasterWeight(0);
         $signer = new \src\model\response\result\data\Signer();
         $signer->address = $signerAddress;
         $signer->weight = $signerWeight;
