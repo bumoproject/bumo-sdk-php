@@ -15,8 +15,6 @@ PHP developers can easily operate Bumo blockchain via the Bumo PHP SDK.
 
 ## Require
 
-Ed25519, which is for signature.
-
 php5.6 and above.
 
 
