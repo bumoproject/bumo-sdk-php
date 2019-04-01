@@ -26,7 +26,7 @@ php5.6 and above.
   example: 
 
 ```shell
-  composer require bumo/bumo-sdk:^v1.0.0
+  composer require bumo/bumo-sdk:^v1.0.1
 ```
 
 ## Example project
