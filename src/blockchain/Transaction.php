@@ -400,7 +400,7 @@ class Transaction {
                 throw new SDKException("SIGNATURES_ARRAY_ERROR", null);
             }
             if (Tools::isEmpty($signatures)) {
-                throw new SDKException("SIGNATURE_EMPTY_ERROR", null);
+                throw new SDKException("SIGNATURES_EMPTY_ERROR", null);
             }
             $transactionItems = new TransactionSubmitItemsRequest();
             $transactionItem = new TransactionSubmitItem();
