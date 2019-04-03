@@ -50,7 +50,7 @@ class BUOperation {
                 throw new SDKException("SOURCEADDRESS_EQUAL_DESTADDRESS_ERROR", null);
             }
             $amount = $buSendOperation->getAmount();
-            if(Tools::isNULL($amount) || is_string($amount) || !is_numeric($amount) || $amount < 0) {
+            if(Tools::isNULL($amount) || is_string($amount) || !is_int($amount) || $amount < 0) {
                 throw new SDKException("INVALID_BU_AMOUNT_ERROR", null);
             }
             $metadata = $buSendOperation->getMetadata();

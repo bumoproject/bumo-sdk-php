@@ -123,7 +123,7 @@ class AssetOperation {
                 throw new SDKException("INVALID_ISSUER_ADDRESS_ERROR", null);
             }
             $amount = $assetSendOperation->getAmount();
-            if(Tools::isNULL($amount) || is_string($amount) || !is_numeric($amount) || $amount < 0) {
+            if(Tools::isNULL($amount) || is_string($amount) || !is_int($amount) || $amount < 0) {
                 throw new SDKException("INVALID_ASSET_AMOUNT_ERROR", null);
             }
             $metadata = $assetSendOperation->getMetadata();
