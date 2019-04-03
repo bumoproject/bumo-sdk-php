@@ -49,7 +49,7 @@ class ContractOperation {
                 throw new SDKException("INVALID_SOURCEADDRESS_ERROR", null);
             }
             $initBalance = $contractCreateOperation->getInitBalance();
-            if(Tools::isEmpty($initBalance) ||is_string($initBalance) || !is_numeric($initBalance) || $initBalance <= 0) {
+            if(Tools::isEmpty($initBalance) || !is_int($initBalance) || $initBalance <= 0) {
                 throw new SDKException("INVALID_INITBALANCE_ERROR", null);
             }
             $type = $contractCreateOperation->getType();
