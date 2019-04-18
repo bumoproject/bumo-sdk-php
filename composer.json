@@ -3,7 +3,7 @@
   "description": "PHP developers can easily operate BUMO blockchain via the BUMO PHP SDK",
   "keywords": ["bumo", "sdk", "bumo-sdk"],
   "homepage": "https://github.com/bumoproject/bumo-sdk-php.git",
-  "version": "v1.0.1",
+  "version": "v1.0.2",
   "require": {
     "google/protobuf": "v3.6.0.1",
     "simplito/elliptic-php": "^1.0",
