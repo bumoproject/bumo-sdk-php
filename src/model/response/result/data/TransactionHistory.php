@@ -6,6 +6,10 @@ namespace src\model\response\result\data;
 class TransactionHistory {
     public $actual_fee;
     public $close_time;
+    /**
+     * @var string[]
+     */
+    public $contract_tx_hashes;
     public $error_code;
     public $error_desc;
     public $hash;
