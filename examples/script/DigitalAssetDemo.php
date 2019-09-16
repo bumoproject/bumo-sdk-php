@@ -8,14 +8,14 @@
 
 include_once dirname(dirname(dirname(__FILE__))) . "/autoload.php";
 
-$sdk = \src\SDK::getInstance("http://seed1.bumotest.io:26002");
+$sdk = \src\SDK::getInstance("http://seed1.bumo.io:16002");
 //$sdk = \src\SDK::getInstance("http://127.0.0.1:36002"); // localhost
 
 class DigitalAssetDemo extends PHPUnit_Framework_TestCase {
     public function setSDKConfigure($chainId) {
         $sdkConfigure = new \src\model\request\SDKConfigure();
-        $sdkConfigure->setChainId($chainId);
-        $sdkConfigure->setUrl("http://127.0.0.1:36002");
+        $sdkConfigure->setChainId(0);
+        $sdkConfigure->setUrl("seed1.bumo.io:16002");
         $GLOBALS['sdk'] = \src\SDK::getInstanceWithConfigure($sdkConfigure);
     }
     /** @test */
@@ -605,7 +605,7 @@ class DigitalAssetDemo extends PHPUnit_Framework_TestCase {
 
     /** @test */
     public function assetSend() {
-        $this->setSDKConfigure(10);
+        $this->setSDKConfigure(0);
 
         // The account private key to send asset
         $senderPrivateKey = "privbyJsNEz6oGFmXCXBHtCKSerTFidxd86Swe5JfKxyUQ5Mqt48Rg22";
@@ -812,6 +812,53 @@ class DigitalAssetDemo extends PHPUnit_Framework_TestCase {
     }
 
     /** @test */
+    public function testFor() {
+        $nonce = 0;
+        for($i = 0; $i < 10; $i++) {
+            if ($nonce == 0) {
+                $nonce = $this->getAccountNonce("buQjRsKFr7HfNrBTWWgQ44fUfAQ5NwgVhaBt");
+                $nonce -= 1;
+            }
+            // The account private key to send bu
+            $senderPrivateKey = "privbyJsNEz6oGFmXCXBHtCKSerTFidxd86Swe5JfKxyUQ5Mqt48Rg22";
+            // The account to receive bu
+            $destAddress = "buQoP2eRymAcUm3uvWgQ8RnjtrSnXBXfAzsV";
+            // The amount to be sent
+            $buAmount = \src\common\Tools::BU2MO("0.01");
+            // The fixed write 1000L, the unit is MO
+            $gasPrice = 1000;
+            //Set up the maximum cost 0.01BU
+            $feeLimit = \src\common\Tools::BU2MO("0.01");
+            // Metadata
+            $metadata = "发送BU资产";
+
+            // 1. Get the account address to send this transaction
+            $accountAddress = \src\crypto\key\KeyPair::getEncAddressByPrivateKey($senderPrivateKey);
+            // Transaction initiation account's nonce + 1
+            $nonce += 1;
+
+            // 2. Build sendBU
+            $sendBU = new \src\model\request\operation\BUSendOperation();
+            $sendBU->setSourceAddress($accountAddress);
+            $sendBU->setDestAddress($destAddress);
+            $sendBU->setAmount($buAmount);
+            $sendBU->setMetadata($metadata);
+
+            $operations = array();
+            array_push($operations, $sendBU);
+
+            $privateKeys = array();
+            array_push($privateKeys, $senderPrivateKey);
+
+            $hash = DigitalAssetDemo::buildBlobAndSignAndSubmit($privateKeys, $accountAddress, $nonce, $gasPrice, $feeLimit, $metadata, $operations);
+            if ($hash) {
+                echo "Submit transaction successfully, hash: " . $hash;
+            }
+        }
+
+    }
+
+    /** @test */
     public function logCreate() {
         $this->setSDKConfigure(10);
 
@@ -852,10 +899,13 @@ class DigitalAssetDemo extends PHPUnit_Framework_TestCase {
         if ($hash) {
             echo "Submit transaction successfully, hash: " . $hash;
         }
+        else {
+            return;
+        }
     }
 
     private function getAccountNonce($accountAddress) {
-        $this->setSDKConfigure(10);
+        $this->setSDKConfigure(0);
         $account = $GLOBALS['sdk']->getAccountService();
 
         $accountGetNonceRequest = new \src\model\request\AccountGetNonceRequest();
@@ -868,7 +918,7 @@ class DigitalAssetDemo extends PHPUnit_Framework_TestCase {
     }
 
     private function buildBlobAndSignAndSubmit($privateKeys, $sourceAddress, $nonce, $gasPrice, $feeLimit, $metadata, $operations) {
-        $this->setSDKConfigure(10);
+        $this->setSDKConfigure(0);
         $transaction =  $GLOBALS['sdk']->getTransactionService();
 
         // Build blob

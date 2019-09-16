@@ -27,6 +27,7 @@ use \src\model\response\BlockGetLatestRewardResponse;
 use \src\model\response\BlockGetFeesResponse;
 use \src\model\response\BlockGetLatestFeesResponse;
 
+use src\model\response\ContractCallResponse;
 use \src\model\response\result\BlockGetNumberResult;
 use \src\model\response\result\BlockCheckStatusResult;
 use \src\model\response\result\BlockGetInfoResult;
@@ -38,8 +39,9 @@ use \src\model\response\result\BlockGetRewardResult;
 use \src\model\response\result\BlockGetLatestRewardResult;
 use \src\model\response\result\BlockGetFeesResult;
 use \src\model\response\result\BlockGetLatestFeesResult;
+use \src\model\response\result\data\Rewards;
 
-use \src\model\response\result\data\ValidatorRewardInfo;
+use \src\model\input\ContractCallInput;
 
 use \src\common\General;
 use \src\common\Http;
@@ -321,33 +323,47 @@ class Block {
             if(Tools::isEmpty(General::getInstance()->getUrl())) {
                 throw new SDKException("URL_EMPTY_ERROR", null);
             }
-            $baseUrl = General::getInstance()->blockGetRewardUrl($blockNumber);
-            $result = Http::get($baseUrl);
+
+            $input = array(
+                "method" => "getRewardDistribute",
+            );
+
+            $contractCallInput = new ContractCallInput();
+            $contractCallInput->opt_type = 2;
+            $contractCallInput->fee_limit = 1000000000;
+            $contractCallInput->contract_address = "buQqzdS9YSnokDjvzg4YaNatcFQfkgXqk6ss";
+            $contractCallInput->input = json_encode($input);
+
+            $baseUrl = General::getInstance()->contractCallUrl();
+            $result = Http::post($baseUrl, json_encode($contractCallInput));
             if (Tools::isEmpty($result)) {
                 throw new SDKException("CONNECTNETWORK_ERROR", null);
             }
-            $blockGetRewardJsonResponse = Tools::jsonToClass($result, new BlockGetRewardJsonResponse());
-            $errorCode = $blockGetRewardJsonResponse->error_code;
-            if (4 == $errorCode) {
-                $errorDesc = $blockGetRewardJsonResponse->error_desc;
-                throw new SDKException($errorCode, is_null($errorDesc)? "Block(" . $blockNumber . ") does not exist" : $errorDesc);
+            $contractCallResponse = new ContractCallResponse();
+            $contractCallResponse = Tools::jsonToClass($result, $contractCallResponse);
+
+            if ($contractCallResponse->error_code == 0) {
+                $value = $contractCallResponse->result->query_rets[0]->result->value;
+                $valueJson = json_decode($value, true);
+                $validators = (array)array_keys($valueJson["rewards"]["validators"]);
+                for ($i = 0; $i < count($validators); $i++) {
+                    $validator = new Rewards();
+                    $validator->address = $validators[$i];
+                    $validator->reward = $valueJson["rewards"]["validators"][$validators[$i]];
+                    $blockGetRewardResult->addValidator($validator);
+                }
+
+                $kols = (array)array_keys($valueJson["rewards"]["kols"]);
+                for ($i = 0; $i < count($kols); $i++) {
+                    $kol = new Rewards();
+                    $kol->address = $kols[$i];
+                    $kol->reward = $valueJson["rewards"]["kols"][$kols[$i]];
+                    $blockGetRewardResult->addKol($kol);
+                }
+                $blockGetRewardResponse->buildResponse("SUCCESS", null, $blockGetRewardResult);
+            } else {
+                $blockGetRewardResponse->buildResponse($contractCallResponse->error_code, $contractCallResponse->error_desc);
             }
-            if ($errorCode != 0) {
-                $errorDesc = $blockGetRewardJsonResponse->error_desc;
-                throw new SDKException($errorCode, $errorDesc);
-            }
-            $validator_reward = (array)$blockGetRewardJsonResponse->result->validators_reward;
-            $blockGetRewardResult->block_reward = $blockGetRewardJsonResponse->result->block_reward;
-            $validators = array_keys($validator_reward);
-            $validatorRewardInfoArray = array();
-            for ($i = 0; $i < count($validators); $i++) {
-                $validatorRewardInfo = new ValidatorRewardInfo();
-                $validatorRewardInfo->validator = $validators[$i];
-                $validatorRewardInfo->reward = $validator_reward[$validators[$i]];
-                $validatorRewardInfoArray[$i] = $validatorRewardInfo;
-            }
-            $blockGetRewardResult->validators_reward = $validatorRewardInfoArray;
-            $blockGetRewardResponse->buildResponse("SUCCESS", null, $blockGetRewardResult);
         }
         catch(SDKException $e) {
             $blockGetRewardResponse->buildResponse($e->getErrorCode(), $e->getErrorDesc(), $blockGetRewardResult);
@@ -369,29 +385,46 @@ class Block {
             if(Tools::isEmpty(General::getInstance()->getUrl())) {
                 throw new SDKException("URL_EMPTY_ERROR", null);
             }
-            $baseUrl = General::getInstance()->blockGetLatestRewardUrl();
-            $result = Http::get($baseUrl);
+            $input = array(
+                "method" => "getRewardDistribute",
+            );
+
+            $contractCallInput = new ContractCallInput();
+            $contractCallInput->opt_type = 2;
+            $contractCallInput->fee_limit = 1000000000;
+            $contractCallInput->contract_address = "buQqzdS9YSnokDjvzg4YaNatcFQfkgXqk6ss";
+            $contractCallInput->input = json_encode($input);
+
+            $baseUrl = General::getInstance()->contractCallUrl();
+            $result = Http::post($baseUrl, json_encode($contractCallInput));
             if (Tools::isEmpty($result)) {
                 throw new SDKException("CONNECTNETWORK_ERROR", null);
             }
-            $blockGetRewardJsonResponse = Tools::jsonToClass($result, new BlockGetRewardJsonResponse());
-            $errorCode = $blockGetRewardJsonResponse->error_code;
-            if ($errorCode != 0) {
-                $errorDesc = $blockGetRewardJsonResponse->error_desc;
-                throw new SDKException($errorCode, $errorDesc);
+            $contractCallResponse = new ContractCallResponse();
+            $contractCallResponse = Tools::jsonToClass($result, $contractCallResponse);
+
+            if ($contractCallResponse->error_code == 0) {
+                $value = $contractCallResponse->result->query_rets[0]->result->value;
+                $valueJson = json_decode($value, true);
+                $validators = (array)array_keys($valueJson["rewards"]["validators"]);
+                for ($i = 0; $i < count($validators); $i++) {
+                    $validator = new Rewards();
+                    $validator->address = $validators[$i];
+                    $validator->reward = $valueJson["rewards"]["validators"][$validators[$i]];
+                    $blockGetLatestRewardResult->addValidator($validator);
+                }
+
+                $kols = (array)array_keys($valueJson["rewards"]["kols"]);
+                for ($i = 0; $i < count($kols); $i++) {
+                    $kol = new Rewards();
+                    $kol->address = $kols[$i];
+                    $kol->reward = $valueJson["rewards"]["kols"][$kols[$i]];
+                    $blockGetLatestRewardResult->addKol($kol);
+                }
+                $blockGetLatestRewardResponse->buildResponse("SUCCESS", null, $blockGetLatestRewardResult);
+            } else {
+                $blockGetLatestRewardResponse->buildResponse($contractCallResponse->error_code, $contractCallResponse->error_desc);
             }
-            $validator_reward = (array)$blockGetRewardJsonResponse->result->validators_reward;
-            $blockGetLatestRewardResult->block_reward = $blockGetRewardJsonResponse->result->block_reward;
-            $validators = array_keys($validator_reward);
-            $validatorRewardInfoArray = array();
-            for ($i = 0; $i < count($validators); $i++) {
-                $validatorRewardInfo = new ValidatorRewardInfo();
-                $validatorRewardInfo->validator = $validators[$i];
-                $validatorRewardInfo->reward = $validator_reward[$validators[$i]];
-                $validatorRewardInfoArray[$i] = $validatorRewardInfo;
-            }
-            $blockGetLatestRewardResult->validators_reward = $validatorRewardInfoArray;
-            $blockGetLatestRewardResponse->buildResponse("SUCCESS", null, $blockGetLatestRewardResult);
         }
         catch(SDKException $e) {
             $blockGetLatestRewardResponse->buildResponse($e->getErrorCode(), $e->getErrorDesc(), $blockGetLatestRewardResult);

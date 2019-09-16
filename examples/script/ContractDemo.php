@@ -9,13 +9,13 @@
 include_once dirname(dirname(dirname(__FILE__))) . "/autoload.php";
 
 //$sdk = \src\SDK::getInstance("http://seed1.bumotest.io:26002");
-$sdk = \src\SDK::getInstance("http://127.0.0.1:36002"); // localhost
+$sdk = \src\SDK::getInstance("http://seed1.bumotest.io:26002"); // localhost
 
 class ContractDemo extends PHPUnit_Framework_TestCase {
     public function setSDKConfigure($chainId) {
         $sdkConfigure = new \src\model\request\SDKConfigure();
-        $sdkConfigure->setChainId($chainId);
-        $sdkConfigure->setUrl("http://127.0.0.1:36002");
+        $sdkConfigure->setChainId(0);
+        $sdkConfigure->setUrl("http://seed1.bumotest.io:26002");
         $GLOBALS['sdk'] = \src\SDK::getInstanceWithConfigure($sdkConfigure);
     }
     /** @test */

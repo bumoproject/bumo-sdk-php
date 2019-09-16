@@ -4,8 +4,8 @@
  */
 namespace src\model\response\result\data;
 
-class ValidatorRewardInfo {
-    public $validator;//String
+class Rewards {
+    public $address;//String
     public $reward; //Long
 }
 ?>
