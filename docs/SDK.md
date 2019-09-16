@@ -1995,14 +1995,13 @@ blockNumber|Long|Required, the height of the block to be queried must be bigger 
 
    Parameter      |     Type     |        Description
 ----------- | ------------ | ----------------
-validators|[ValidatorInfo](#validatorinfo)[]|Validators list
+validators|String[]|Validators list
 
 #### ValidatorInfo
 
    Member变量  |     Type     |        Description
 ----------- | ------------ | ----------------
 address|String|Consensus node address
-plegeCoinAmount|Long|Validators' deposit
 
 > Error Code
 
@@ -2050,7 +2049,7 @@ function getLatestValidators()
 
    Parameter      |     Type     |        Description
 ----------- | ------------ | ----------------
-validators|[ValidatorInfo](#validatorinfo)[]|	Validators list
+validators|String[]|	Validators list
 
 > Error Code
 
@@ -2078,6 +2077,8 @@ if ($response->error_code == 0) {
 
    The getReward interface is used to retrieve the block reward and valicator node rewards in the specified block.
 
+  Note: It is not recommended to use this interface. The interface will be deleted later. It is recommended to use the getLatestReward interface. The parameter blockNumber of this interface is invalid, only the latest block reward is obtained, which is the same as the getLatestReward interface.
+
 > Method
 
 ```php
@@ -2099,15 +2100,15 @@ blockNumber|Long|Required, the height of the block to be queried must be bigger 
 
    Parameter      |     Type     |        Description
 ----------- | ------------ | ----------------
-blockReward|Long|Block rewards
-validatorsReward|[ValidatorReward](#validatorreward)[]|Validators rewards
+ validators | [Rewards](#Rewards)[] |Validators rewards
+ kols       | [Rewards](#Rewards)[] |Kols rewards
 
-#### ValidatorReward
+#### Rewards
 
    Member变量  |     Type     |        Description
 ----------- | ------------ | ----------------
-  validator|String|Validator address
-  reward|Long|Validator reward
+ address |String|Node address
+  reward|Long|Node reward
 
 
 > Error Code

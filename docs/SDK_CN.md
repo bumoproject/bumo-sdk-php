@@ -1981,14 +1981,13 @@ blockNumber|Long|必填，待查询的区块高度，必须大于0
 
    参数      |     类型     |        描述       
 ----------- | ------------ | ---------------- 
-validators|[ValidatorInfo](#validatorinfo)[]|验证节点列表
+validators|String[]|验证节点列表
 
 #### ValidatorInfo
 
    成员变量  |     类型     |        描述       
 ----------- | ------------ | ---------------- 
 address|String|共识节点地址
-plegeCoinAmount|Long|验证节点押金
 
 > 错误码
 
@@ -2037,7 +2036,7 @@ function getLatestValidators()
 
    参数      |     类型     |        描述       
 ----------- | ------------ | ---------------- 
-validators|[ValidatorInfo](#validatorinfo)[]|验证节点列表
+validators|String[]|验证节点列表
 
 > 错误码
 
@@ -2065,6 +2064,8 @@ if ($response->error_code == 0) {
 
    该接口用于获取指定区块中的区块奖励和验证节点奖励
 
+　注：不建议使用该接口，后期会删除该接口，建议使用 getLatestReward 接口。该接口的参数 blockNumber 无效，只获取最新的区块奖励，与 getLatestReward 功接口能一样。
+
 > 调用方法
 
 ```php
@@ -2086,15 +2087,15 @@ blockNumber|Long|必填，待查询的区块高度，必须大于0
 
    参数      |     类型     |        描述       
 ----------- | ------------ | ---------------- 
-blockReward|Long|区块奖励数
-validatorsReward|[ValidatorReward](#validatorreward)[]|验证节点奖励情况
+validators|[Rewards](#Rewards)[]|验证节点奖励
+kols|[Rewards](#Rewards)[]|生态节点奖励
 
-#### ValidatorReward
+#### Rewards
 
    成员变量  |     类型     |        描述       
 ----------- | ------------ | ---------------- 
-  validator|String|验证节点地址
-  reward|Long|验证节点奖励
+ address |String|节点地址
+  reward|Long|节点奖励
 
 
 > 错误码
