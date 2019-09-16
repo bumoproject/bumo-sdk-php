@@ -2145,8 +2145,8 @@ function GetLatestReward()
 
    参数      |     类型     |        描述       
 ----------- | ------------ | ---------------- 
-blockReward|Long|区块奖励数
-validatorsReward|[ValidatorReward](#validatorreward)[]|验证节点奖励情况
+ validators | [Rewards](#Rewards)[] | 验证节点奖励 
+ kols       | [Rewards](#Rewards)[] | 生态节点奖励 
 
 > 错误码
 

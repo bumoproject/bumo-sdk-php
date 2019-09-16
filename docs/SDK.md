@@ -2157,8 +2157,8 @@ function GetLatestReward()
 
    Parameter      |     Type     |        Description
 ----------- | ------------ | ----------------
-blockReward|Long|Block rewards
-validatorsReward|[ValidatorReward](#validatorreward)[]|Validator rewards
+ validators | [Rewards](#Rewards)[] | Validators rewards 
+ kols       | [Rewards](#Rewards)[] | Kols rewards       
 
 > Error Code
 
