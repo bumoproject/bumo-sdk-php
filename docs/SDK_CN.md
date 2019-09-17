@@ -2095,7 +2095,7 @@ kols|[Rewards](#Rewards)[]|生态节点奖励
    成员变量  |     类型     |        描述       
 ----------- | ------------ | ---------------- 
  address |String|节点地址
-  reward|Long|节点奖励
+  reward|Array|节点奖励
 
 
 > 错误码
