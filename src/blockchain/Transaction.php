@@ -115,11 +115,11 @@ class Transaction {
                 throw new SDKException("INVALID_NONCE_ERROR", null);
             }
             $gasPrice = $transactionBuildBlobRequest->getGasPrice();
-            if (Tools::isEmpty($gasPrice) || !is_int($gasPrice) || $gasPrice < Constant::GAS_PRICE_MIN) {
+            if (Tools::isNULL($gasPrice) || !is_int($gasPrice) || $gasPrice < 0) {
                 throw new SDKException("INVALID_GASPRICE_ERROR", null);
             }
             $feeLimit = $transactionBuildBlobRequest->getFeeLimit();
-            if (Tools::isEmpty($feeLimit) || !is_int($feeLimit) || $feeLimit < Constant::FEE_LIMIT_MIN) {
+            if (Tools::isNULL($feeLimit) || !is_int($feeLimit) || $feeLimit < 0) {
                 throw new SDKException("INVALID_FEELIMIT_ERROR", null);
             }
             $ceilLedgerSeq = $transactionBuildBlobRequest->getCeilLedgerSeq();

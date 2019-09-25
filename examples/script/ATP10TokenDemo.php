@@ -6,6 +6,7 @@
  * Time: 10:19
  */
 
+require_once dirname(dirname(dirname(__FILE__))) . "/vendor/autoload.php";
 include_once dirname(dirname(dirname(__FILE__))) . "/autoload.php";
 
 //$sdk = \src\SDK::getInstance("http://seed1.bumotest.io:26002");

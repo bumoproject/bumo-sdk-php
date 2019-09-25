@@ -234,7 +234,7 @@ class Contract {
                 throw new SDKException("CONTRACTADDRESS_CODE_BOTH_NULL_ERROR", null);
             }
             $feeLimit = $contractCallRequest->getFeeLimit();
-            if(Tools::isEmpty($feeLimit) || !is_int($feeLimit) || $feeLimit < Constant::FEE_LIMIT_MIN) {
+            if(Tools::isNULL($feeLimit) || !is_int($feeLimit) || $feeLimit < 0) {
                 throw new SDKException("INVALID_FEELIMIT_ERROR", null);
             }
             $optType = $contractCallRequest->getOptType();
@@ -250,7 +250,7 @@ class Contract {
                 throw new SDKException("INPUT_NOT_STRING_ERROR", null);
             }
             $gasPrice = $contractCallRequest->getGasPrice();
-            if (!Tools::isNULL($gasPrice) && (!is_int($gasPrice) || $gasPrice < Constant::GAS_PRICE_MIN)) {
+            if (!Tools::isNULL($gasPrice) && (!is_int($gasPrice) || $gasPrice < 0)) {
                 throw new SDKException("INVALID_GASPRICE_ERROR", null);
             }
             if(Tools::isEmpty(General::getInstance()->getUrl())) {

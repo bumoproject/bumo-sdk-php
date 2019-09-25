@@ -9,10 +9,6 @@ class Constant{
      const METADATA_KEY_MAX = 1024;
      const METADATA_VALUE_MAX = 256000;
      const ASSET_CODE_MAX = 64;
-     const TOKEN_NAME_MAX = 1024;
-     const TOKEN_SYMBOL_MAX = 1024;
-     const TOKEN_DECIMALS_MAX = 8;
-     const TOKEN_DECIMALS_MIN = 0;
      const GAS_PRICE_MIN = 1000;
      const FEE_LIMIT_MIN = 1;
      const HASH_HEX_LENGTH = 64;
@@ -22,8 +18,6 @@ class Constant{
      const LOG_TOPIC_MAX = 128;
      const LOG_EACH_DATA_MIN = 1;
      const LOG_EACH_DATA_MAX = 1024;
-     const DESCRIPTION_LENGTH_MAX = 1024;
      const INT64_MAX = 9223372036854775807;
-     const INT32_MAX = 2147483647;
      const UINT_MAX = 4294967295;
  }

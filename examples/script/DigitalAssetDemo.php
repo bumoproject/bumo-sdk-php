@@ -6,6 +6,7 @@
  * Time: 10:19
  */
 
+require_once dirname(dirname(dirname(__FILE__))) . "/vendor/autoload.php";
 include_once dirname(dirname(dirname(__FILE__))) . "/autoload.php";
 
 $sdk = \src\SDK::getInstance("http://seed1.bumo.io:16002");
@@ -315,9 +316,9 @@ class DigitalAssetDemo extends PHPUnit_Framework_TestCase {
             echo "Failed to change amount bu to mo\n";
             return;
         }
-        $gasPrice = 1000;
-        $feeLimit = \src\common\Tools::BU2MO("0.01");
-        if (!$feeLimit) {
+        $gasPrice = 0;
+        $feeLimit = \src\common\Tools::BU2MO("0");
+        if (false === $feeLimit) {
             echo "Failed to change feeLimit bu to mo\n";
             return;
         }
